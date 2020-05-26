@@ -1,5 +1,9 @@
 package login_application;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,9 +23,9 @@ import javafx.stage.Stage;
 
 public class Login extends Application {
 	
-	public Login() {
-		
-	}
+	File file = new File("C:\\Users\\ks255\\eclipse-workspace-java\\Graphical User Interface Projects\\src\\login_application\\SignUpInformation.txt");
+	
+	
 	
 	public void openLogin () throws Exception {
 		start(new Stage());
@@ -42,11 +46,25 @@ public class Login extends Application {
 	
 	// new scene with the grid, height, width as parameters
 	
-	
-	
 	public static void main(String[] args) {
 		Application.launch(args);
 
+	}
+	
+	// authenticates the user, checks the user name and password
+	public boolean authenticate(String u, String p) throws Exception {
+		@SuppressWarnings("resource")
+		BufferedReader b = new BufferedReader(new FileReader(file));
+		String readLine = "";
+		while ((readLine = b.readLine()) != null) {
+			String user = readLine.substring(0, readLine.indexOf("\\"));
+			String pass = readLine.substring(readLine.indexOf("\\")+1);
+			if(user.equals(u) && pass.equals(p)) {
+				return true;
+			}
+        }
+		return false;
+		
 	}
 
 	@Override
@@ -95,6 +113,15 @@ public class Login extends Application {
 			public void handle(ActionEvent e) {
 				actionTarget.setFill(Color.RED);
 				actionTarget.setText("Sign in button pressed");
+				if(!nameInput.getText().equals("")) {
+					try {
+						System.out.println(authenticate(nameInput.getText(), passwordInput.getText()));
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
 				
 			}
 		});
@@ -103,6 +130,7 @@ public class Login extends Application {
 			
 			public void handle(ActionEvent e) {
 				try {
+					@SuppressWarnings("unused")
 					SignUp sg = new SignUp();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

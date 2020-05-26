@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 
 public class SignUp extends Application {
 	
+	FilesHandler filesHandler = new FilesHandler();
+	
 	public SignUp() throws Exception {
 		start(new Stage());
 	}
@@ -92,15 +94,15 @@ public class SignUp extends Application {
 			public void handle(ActionEvent e) {
 				actionTarget.setFill(Color.RED);
 				actionTarget.setText("Thank you for signing up!");
-				System.out.println(nameInput.getText());
 				try {
 					if(!nameInput.getText().equals("")) {
-						writer.write("User name: "+nameInput.getText());
-						writer.write(" Password: " + passwordInput.getText()+"\n");
+						writer.write(nameInput.getText());
+						writer.write("\\" + passwordInput.getText()+"\n");
+						//filesHandler.addUsers(nameInput.getText(), passwordInput.getText());
+						//filesHandler.print();
 					}
 					writer.close();
-					Login log = new Login();
-					log.openLogin();
+					new Login().openLogin();
 					primaryStage.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
